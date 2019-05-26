@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Walking Dead</h2>
+
+Episod
+<input type="text" id="txt1"> 
+
+
+<button type="button" onclick="showEpisod()">Request data</button>
+<button type="button" onclick="showSeason()">Request season data</button>
+<button type="button" onclick="showall()">All Information</button>
+<button type="button" onclick="remove()">Remove</button>
+
+<p id="demo"></p>
+
+
+<script>
+function showall(str) {
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var json=JSON.parse(this.responseText)
+	  for(i=0;i<json.episodes.length;i++)
+	  	  document.getElementById("demo").innerHTML += "<br/>"+json.episodes[i].id+" : "+ json.episodes[i].name ;
+    }
+  };
+  xhttp.open("GET", "all", true);
+  xhttp.send();   
+}
+
+function showEpisod() {
+   var eid=document.getElementById("txt1").value;
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var json=JSON.parse(this.responseText)
+	  	document.getElementById("demo").innerHTML = json.id+" : "+ json.name+" :" + json.season;
+    }
+  };
+  xhttp.open("GET", "episode?id="+eid, true);
+  xhttp.send();   
+}
+
+function showSeason() {
+   var sid=document.getElementById("txt1").value;
+var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	  	document.getElementById("demo").innerHTML = this.responseText;
+
+    }
+  };
+  xhttp.open("GET", "season?id="+sid, true);
+  xhttp.send();   
+}
+
+
+
+function remove() {
+   var eid=document.getElementById("txt1").value;
+  var xhttp;
+  xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	window.location.reload();
+    }
+  };
+  xhttp.open("GET", "remove?id="+eid, true);
+  xhttp.send();   
+}
+
+</script>
+
+
+
+
+</body>
+</html>
